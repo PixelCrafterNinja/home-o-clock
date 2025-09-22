@@ -1,0 +1,168 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Windows line endings for Windows-specific files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Unix line endings for Unix-specific files
+*.sh text eol=lf
+
+# Source code files
+*.c text
+*.cpp text
+*.cxx text
+*.cc text
+*.h text
+*.hpp text
+*.hxx text
+*.js text
+*.jsx text
+*.ts text
+*.tsx text
+*.json text
+*.css text
+*.scss text
+*.sass text
+*.less text
+*.html text
+*.htm text
+*.xml text
+*.yaml text
+*.yml text
+*.md text
+*.txt text
+*.py text
+*.php text
+*.java text
+*.cs text
+*.go text
+*.rs text
+*.rb text
+*.swift text
+*.kt text
+*.scala text
+*.sql text
+
+# Configuration files
+*.ini text
+*.cfg text
+*.conf text
+*.config text
+*.toml text
+*.env text
+
+# Documentation
+*.rst text
+*.adoc text
+
+# Binary files (explicitly marked as binary to avoid line ending conversion)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.rar binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.app binary
+*.dmg binary
+*.iso binary
+
+# Font files
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+
+# IDE and Editor files - exclude from diff and merge
+# Visual Studio Code
+.vscode/ export-ignore
+*.code-workspace export-ignore
+
+# IntelliJ IDEA / WebStorm / PyCharm etc.
+.idea/ export-ignore
+*.iml export-ignore
+*.ipr export-ignore
+*.iws export-ignore
+
+# Eclipse
+.project export-ignore
+.classpath export-ignore
+.settings/ export-ignore
+.metadata/ export-ignore
+
+# NetBeans
+nbproject/ export-ignore
+nbbuild/ export-ignore
+dist/ export-ignore
+nbdist/ export-ignore
+
+# Xcode
+*.xcodeproj/ export-ignore
+*.xcworkspace/ export-ignore
+
+# Sublime Text
+*.sublime-project export-ignore
+*.sublime-workspace export-ignore
+
+# Vim
+*.swp export-ignore
+*.swo export-ignore
+*~ export-ignore
+
+# Emacs
+*~ export-ignore
+\#*\# export-ignore
+.\#* export-ignore
+
+# System files
+.DS_Store export-ignore
+Thumbs.db export-ignore
+Desktop.ini export-ignore
+$RECYCLE.BIN/ export-ignore
+
+# Temporary files
+*.tmp export-ignore
+*.temp export-ignore
+*.log export-ignore
+*.cache export-ignore
+
+# Node.js
+node_modules/ export-ignore
+npm-debug.log* export-ignore
+yarn-debug.log* export-ignore
+yarn-error.log* export-ignore
+.npm export-ignore
+.yarn-integrity export-ignore
+
+# Python
+__pycache__/ export-ignore
+*.py[cod] export-ignore
+*$py.class export-ignore
+.pytest_cache/ export-ignore
+.coverage export-ignore
+.venv/ export-ignore
+venv/ export-ignore
+env/ export-ignore
+
+# Build directories
+build/ export-ignore
+dist/ export-ignore
+out/ export-ignore
+target/ export-ignore
+bin/ export-ignore
+obj/ export-ignore
+
+# Dependency directories
+vendor/ export-ignore
+packages/ export-ignore

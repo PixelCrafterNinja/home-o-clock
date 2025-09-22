@@ -1,0 +1,323 @@
+<!-- Creato da Daniele Rosati (daniele.rosati@siae.it) -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcolo uscita lavoro</title>
+  <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --container-bg: white;
+      --text-color: #333;
+      --input-border-color: #ccc;
+      --button-bg: #0078D7;
+      --button-hover-bg: #005fa3;
+      --shadow-color: rgba(0,0,0,0.2);
+    }
+
+    body.dark-mode {
+      --bg-color: #1e1e1e;
+      --container-bg: #2d2d2d;
+      --text-color: #f5f5f5;
+      --input-border-color: #555;
+      --button-bg: #0078D7;
+      --button-hover-bg: #005fa3;
+      --shadow-color: rgba(0,0,0,0.4);
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .top-controls {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* Theme Toggle */
+    .theme-switch-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    .theme-switch {
+      display: inline-block;
+      height: 24px;
+      position: relative;
+      width: 44px;
+    }
+    .theme-switch input {
+      display:none;
+    }
+    .slider {
+      background-color: #ccc;
+      bottom: 0;
+      cursor: pointer;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      background-color: #fff;
+      bottom: 4px;
+      content: "";
+      height: 16px;
+      left: 4px;
+      position: absolute;
+      transition: .4s;
+      width: 16px;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #0078D7;
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Help Button */
+    .help-button {
+      background: var(--container-bg);
+      color: var(--text-color);
+      border: 1px solid var(--input-border-color);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: var(--container-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px var(--shadow-color);
+      text-align: center;
+      max-width: 300px;
+      transition: background-color 0.3s;
+    }
+    input, button {
+      margin: 10px 0;
+      padding: 8px;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid var(--input-border-color);
+      box-sizing: border-box;
+    }
+    input {
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
+    button {
+      background: var(--button-bg);
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: var(--button-hover-bg);
+    }
+    #risultato {
+      margin-top: 15px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background-color: var(--container-bg);
+      color: var(--text-color);
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 12px;
+      position: relative;
+    }
+    .close-button {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .notification-toggle-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+      padding: 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-controls">
+    <button id="helpBtn" class="help-button">?</button>
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider"></div>
+      </label>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Orario di Uscita</h1>
+    <label for="ingresso">Orario di ingresso:</label>
+    <input type="time" id="ingresso" required>
+
+    <label for="durataLavoro">Ore di lavoro:</label>
+    <input type="time" id="durataLavoro" value="07:12" required>
+
+    <label for="pausa">Durata pausa pranzo:</label>
+    <input type="time" id="pausa" value="00:50" required>
+
+    <div class="notification-toggle-wrapper">
+      <label for="notification-toggle">Invia notifica?</label>
+      <label class="theme-switch">
+        <input type="checkbox" id="notification-toggle"> 
+        <!-- per attivare l'opzione di default aggiungere checked dopo il toggle: it activates notification send notification by default -->
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <button onclick="calcola()">Calcola uscita</button>
+
+    <p id="risultato"></p>
+  </div>
+
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>Come funziona</h2>
+      <p>Questa applicazione calcola l'orario in cui puoi lasciare il lavoro.</p>
+      <p><strong>Orario di ingresso:</strong> Inserisci l'ora in cui hai iniziato a lavorare.</p>
+      <p><strong>Ore di lavoro:</strong> La durata totale della tua giornata lavorativa (es. 7 ore e 12 minuti).</p>
+      <p><strong>Durata pausa pranzo:</strong> Il tempo che dedichi alla pausa pranzo.</p>
+      <p>L'applicazione calcolerà l'orario di uscita. Attivando il toggle ti verrà inviata una notifica dal browser quando sarà il momento di andare a casa.</p>
+      <p style="font-size: 0.8em; font-style: italic; margin-top: 20px;">Created by Daniele Rosati.</p>
+    </div>
+  </div>
+
+  <script>
+    function calcola() {
+      const ingresso = document.getElementById("ingresso").value;
+      const durataLavoro = document.getElementById("durataLavoro").value;
+      const durataPausa = document.getElementById("pausa").value;
+
+      if (!ingresso || !durataLavoro || !durataPausa) {
+        document.getElementById("risultato").textContent = "Inserisci tutti i campi richiesti!";
+        return;
+      }
+
+      const [hIngresso, mIngresso] = ingresso.split(":").map(Number);
+      const [oreLavoro, minutiLavoro] = durataLavoro.split(":").map(Number);
+      const [orePausa, minutiPausa] = durataPausa.split(":").map(Number);
+
+      const inizio = new Date();
+      inizio.setHours(hIngresso, mIngresso, 0, 0);
+
+      const msLavoro = (oreLavoro * 60 + minutiLavoro) * 60 * 1000;
+      const msPausa = (orePausa * 60 + minutiPausa) * 60 * 1000;
+
+      const uscita = new Date(inizio.getTime() + msLavoro + msPausa);
+      const orarioUscita = uscita.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+      document.getElementById("risultato").textContent = `Puoi uscire alle: ${orarioUscita}`;
+
+      const notificheAbilitate = document.getElementById("notification-toggle").checked;
+
+      if (notificheAbilitate) {
+        // Notifica desktop
+        if (Notification.permission === "granted") {
+          scheduleNotification(uscita);
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+              scheduleNotification(uscita);
+            }
+          });
+        }
+      }
+    }
+
+    function scheduleNotification(orario) {
+      const now = new Date();
+      const delay = orario - now;
+      if (delay > 0) {
+        setTimeout(() => {
+          new Notification("È ora di andare a casa! 🕔");
+        }, delay);
+      }
+    }
+
+    // Theme switcher logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('checkbox');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+      function applyTheme(isDark) {
+        if (isDark) {
+          document.body.classList.add('dark-mode');
+          themeToggle.checked = true;
+        } else {
+          document.body.classList.remove('dark-mode');
+          themeToggle.checked = false;
+        }
+      }
+
+      applyTheme(prefersDark.matches);
+
+      themeToggle.addEventListener('change', (e) => {
+        document.body.classList.toggle('dark-mode', e.target.checked);
+      });
+
+      // Help Modal Logic
+      const modal = document.getElementById("helpModal");
+      const helpBtn = document.getElementById("helpBtn");
+      const closeBtn = document.querySelector(".close-button");
+
+      helpBtn.onclick = () => modal.style.display = "block";
+      closeBtn.onclick = () => modal.style.display = "none";
+      window.onclick = (event) => {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
