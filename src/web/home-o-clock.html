@@ -171,6 +171,14 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    .notification-toggle-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+      padding: 0 5px;
+    }
   </style>
 </head>
 <body>
@@ -196,6 +204,14 @@
     <label for="pausa">Durata pausa pranzo:</label>
     <input type="time" id="pausa" value="01:00" required>
 
+    <div class="notification-toggle-wrapper">
+      <label for="notification-toggle">Invia notifica?</label>
+      <label class="theme-switch">
+        <input type="checkbox" id="notification-toggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
     <button onclick="calcola()">Calcola uscita</button>
 
     <p id="risultato"></p>
@@ -209,7 +225,7 @@
       <p><strong>Orario di ingresso:</strong> Inserisci l'ora in cui hai iniziato a lavorare.</p>
       <p><strong>Ore di lavoro:</strong> La durata totale della tua giornata lavorativa (es. 7 ore e 12 minuti).</p>
       <p><strong>Durata pausa pranzo:</strong> Il tempo che dedichi alla pausa pranzo.</p>
-      <p>L'applicazione calcolerà l'orario di uscita e ti invierà una notifica quando sarà il momento di andare a casa.</p>
+      <p>L'applicazione calcolerà l'orario di uscita. Con il toggle puoi farti inviare una notifica quando sarà il momento di andare a casa.</p>
     </div>
   </div>
 
@@ -239,15 +255,19 @@
 
       document.getElementById("risultato").textContent = `Puoi uscire alle: ${orarioUscita}`;
 
-      // Notifica desktop
-      if (Notification.permission === "granted") {
-        scheduleNotification(uscita);
-      } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            scheduleNotification(uscita);
-          }
-        });
+      const notificheAbilitate = document.getElementById("notification-toggle").checked;
+
+      if (notificheAbilitate) {
+        // Notifica desktop
+        if (Notification.permission === "granted") {
+          scheduleNotification(uscita);
+        } else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+              scheduleNotification(uscita);
+            }
+          });
+        }
       }
     }
 
