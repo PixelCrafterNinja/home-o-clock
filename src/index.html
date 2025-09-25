@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Home-o-Clock | Calcola l'orario di uscita da lavoro</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏰</text></svg>">
+  <link rel="stylesheet" href="styles/layout.css">
+</head>
+<body>
+
+  <div class="top-controls">
+    <button id="helpBtn" class="help-button">?</button>
+    <div class="theme-switch-wrapper">
+      <label class="theme-switch" for="checkbox">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider"></div>
+      </label>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Orario di Uscita</h1>
+    <label for="ingresso">Orario di ingresso:</label>
+    <input type="time" id="ingresso" required>
+
+    <label for="durataLavoro">Ore di lavoro:</label>
+    <input type="time" id="durataLavoro" value="07:12" required>
+
+    <label for="pausa">Durata pausa pranzo:</label>
+    <input type="time" id="pausa" value="00:50" required>
+
+    <div class="notification-toggle-wrapper">
+      <label for="notification-toggle">Invia notifica?</label>
+      <label class="theme-switch">
+        <input type="checkbox" id="notification-toggle"> 
+        <!-- per attivare l'opzione di default aggiungere checked dopo il toggle: it activates notification send notification by default -->
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <button onclick="calcola()">Calcola uscita</button>
+
+    <p id="risultato"></p>
+  </div>
+
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>Come funziona</h2>
+      <p>Questa applicazione calcola l'orario in cui puoi lasciare il lavoro.</p>
+      <p><strong>Orario di ingresso:</strong> Inserisci l'ora in cui hai iniziato a lavorare.</p>
+      <p><strong>Ore di lavoro:</strong> La durata totale della tua giornata lavorativa (es. 7 ore e 12 minuti).</p>
+      <p><strong>Durata pausa pranzo:</strong> Il tempo che dedichi alla pausa pranzo.</p>
+      <p>L'applicazione calcolerà l'orario di uscita. Attivando il toggle ti verrà inviata una notifica dal browser quando sarà il momento di andare a casa.</p>
+      <p style="font-size: 0.8em; font-style: italic; margin-top: 20px;">Created by Daniele Rosati.</p>
+    </div>
+  </div>
+
+  <script type="module" src="scripts/main.js">
+  </script>
+
+</body>
+</html>
