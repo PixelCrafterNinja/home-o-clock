@@ -49,13 +49,55 @@ function scheduleNotification(orario) {
   }
 }
 
-    // Theme switcher logic
 document.addEventListener('DOMContentLoaded', () => {
   const calcolaBtn = document.getElementById('calcolaBtn');
-  calcolaBtn.addEventListener('click', calcola);
+  const durataLavoroInput = document.getElementById("durataLavoro");
+  const durataPausaInput = document.getElementById("pausa");
+  const ingressoInput = document.getElementById("ingresso");
 
+  /**
+   * Salva le impostazioni orarie nel localStorage con la data odierna.
+   */
+  function saveTimeSettings() {
+    const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    const settings = {
+      date: today,
+      durataLavoro: durataLavoroInput.value,
+      pausa: durataPausaInput.value,
+      ingresso: ingressoInput.value
+    };
+    localStorage.setItem('timeSettings', JSON.stringify(settings));
+  }
+
+  /**
+   * Carica le impostazioni orarie se sono state salvate oggi.
+   */
+  function loadTimeSettings() {
+    const today = new Date().toISOString().split('T')[0];
+    const savedSettings = localStorage.getItem('timeSettings');
+
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      if (settings.date === today) {
+        durataLavoroInput.value = settings.durataLavoro;
+        durataPausaInput.value = settings.pausa;
+        ingressoInput.value = settings.ingresso;
+      } else {
+        // Se le impostazioni sono di un giorno precedente, le rimuovo
+        localStorage.removeItem('timeSettings');
+      }
+    }
+  }
+
+  calcolaBtn.addEventListener('click', () => {
+    calcola();
+    saveTimeSettings(); // Salva le impostazioni dopo ogni calcolo
+  });
+
+  // Logica per il tema
   const themeToggle = document.getElementById('checkbox');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
   function applyTheme(isDark) {
     if (isDark) {
       document.body.classList.add('dark-mode');
@@ -65,18 +107,30 @@ document.addEventListener('DOMContentLoaded', () => {
       themeToggle.checked = false;
     }
   }
-  
-  applyTheme(prefersDark.matches);
-  
+
+  // Carica il tema salvato
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    applyTheme(savedTheme === 'dark');
+  } else {
+    applyTheme(prefersDark.matches);
+  }
+
   themeToggle.addEventListener('change', (e) => {
-    document.body.classList.toggle('dark-mode', e.target.checked);
+    const isDark = e.target.checked;
+    document.body.classList.toggle('dark-mode', isDark);
+    // Salva la preferenza del tema
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
   });
-  
-  // Help Modal Logic
+
+  // Carica le impostazioni orarie all'avvio
+  loadTimeSettings();
+
+  // Logica per la modale di aiuto
   const modal = document.getElementById("helpModal");
   const helpBtn = document.getElementById("helpBtn");
   const closeBtn = document.querySelector(".close-button");
-  
+
   helpBtn.onclick = () => modal.style.display = "block";
   closeBtn.onclick = () => modal.style.display = "none";
   window.onclick = (event) => {

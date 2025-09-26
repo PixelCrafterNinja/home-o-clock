@@ -9,16 +9,16 @@
 <body>
 
   <div class="top-controls">
-    <button id="helpBtn" class="help-button">?</button>
+    <button id="helpBtn" class="help-button" aria-label="Mostra aiuto" title="Mostra aiuto">?</button>
     <div class="theme-switch-wrapper">
-      <label class="theme-switch" for="checkbox">
+      <label class="theme-switch" for="checkbox" title="Cambia tema (chiaro/scuro)">
         <input type="checkbox" id="checkbox" />
         <div class="slider"></div>
       </label>
     </div>
   </div>
 
-  <div class="container">
+  <main class="container">
     <h1>Orario di Uscita</h1>
     <label for="ingresso">Orario di ingresso:</label>
     <input type="time" id="ingresso" required>
@@ -31,7 +31,7 @@
 
     <div class="notification-toggle-wrapper">
       <label for="notification-toggle">Invia notifica?</label>
-      <label class="theme-switch">
+      <label class="theme-switch" title="Attiva/disattiva notifiche desktop">
         <input type="checkbox" id="notification-toggle"> 
         <!-- per attivare l'opzione di default aggiungere checked dopo il toggle: it activates notification send notification by default -->
         <span class="slider"></span>
@@ -40,13 +40,13 @@
 
     <button id="calcolaBtn">Calcola uscita</button>
 
-    <p id="risultato"></p>
-  </div>
+    <p id="risultato" role="status" aria-live="polite"></p>
+  </main>
 
-  <div id="helpModal" class="modal">
+  <div id="helpModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h2>Come funziona</h2>
+      <span class="close-button" role="button" aria-label="Chiudi finestra di aiuto">&times;</span>
+      <h2 id="modalTitle">Come funziona</h2>
       <p>Questa applicazione calcola l'orario in cui puoi lasciare il lavoro.</p>
       <p><strong>Orario di ingresso:</strong> Inserisci l'ora in cui hai iniziato a lavorare.</p>
       <p><strong>Ore di lavoro:</strong> La durata totale della tua giornata lavorativa (es. 7 ore e 12 minuti).</p>
