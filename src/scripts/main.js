@@ -51,6 +51,9 @@ function scheduleNotification(orario) {
 
     // Theme switcher logic
 document.addEventListener('DOMContentLoaded', () => {
+  const calcolaBtn = document.getElementById('calcolaBtn');
+  calcolaBtn.addEventListener('click', calcola);
+
   const themeToggle = document.getElementById('checkbox');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
   function applyTheme(isDark) {
